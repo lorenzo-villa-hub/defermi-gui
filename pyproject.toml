@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "defermi-gui"
+version = "0.0.1"
+description = "User interface for `defermi`"
+readme = "README.md"
+authors = [
+    { name = "Lorenzo Villa" }
+]
+requires-python = ">=3.11"
+
+dependencies = [
+    "defermi",
+    "streamlit>=1.51.0"
+]
+
+[project.optional-dependencies]
+test = ["pytest"]
+
+[tool.setuptools.packages.find]
+include = ["defermi/gui*"]
+exclude = [
+    "defermi.gui.tests"
+]
+
+[tool.coverage.run]
+branch = true
+include = ["defermi/*"]
+parallel = true
+
+[tool.coverage.paths]
+source = ["defermi/"]
+
+[tool.setuptools.package-data]
+"defermi.gui" = ["presets/*"]
+
+
+[project.scripts]
+defermi-gui = "defermi.gui.cli.main:main"

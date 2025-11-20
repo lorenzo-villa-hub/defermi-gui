@@ -1,0 +1,8 @@
+README.md
+pyproject.toml
+defermi_gui.egg-info/PKG-INFO
+defermi_gui.egg-info/SOURCES.txt
+defermi_gui.egg-info/dependency_links.txt
+defermi_gui.egg-info/entry_points.txt
+defermi_gui.egg-info/requires.txt
+defermi_gui.egg-info/top_level.txt
