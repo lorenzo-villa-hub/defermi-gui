@@ -1,2 +1,0 @@
-[console_scripts]
-defermi-gui = defermi.gui.cli.main:main
