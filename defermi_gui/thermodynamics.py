@@ -3,8 +3,8 @@ import numpy as np
 import uuid
 import streamlit as st
 
-from defermi.gui.info import quenching_info, external_defects_info
-from defermi.gui.utils import init_state_variable
+from defermi_gui.info import quenching_info, external_defects_info
+from defermi_gui.utils import init_state_variable
 
 
 def thermodynamics():

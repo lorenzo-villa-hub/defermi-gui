@@ -4,7 +4,7 @@ import streamlit as st
 from contextlib import nullcontext
 
 from defermi.plotter import plot_pO2_vs_fermi_level, plot_variable_species_vs_fermi_level
-from defermi.gui.utils import download_plot
+from defermi_gui.utils import download_plot
 
 
 def main():

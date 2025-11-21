@@ -4,8 +4,8 @@ import pandas as pd
 import time
 
 from defermi import DefectsAnalysis
-from defermi.gui.info import dataset_info, names_info
-from defermi.gui.utils import init_state_variable, store_edited_df
+from defermi_gui.info import dataset_info, names_info
+from defermi_gui.utils import init_state_variable, store_edited_df
 
 
 

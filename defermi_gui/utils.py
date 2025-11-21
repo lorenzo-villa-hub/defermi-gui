@@ -7,7 +7,7 @@ import pandas as pd
 
 from monty.json import jsanitize, MontyEncoder, MontyDecoder
 
-import defermi.gui
+import defermi_gui
 
 
 def init_state_variable(key,value=None):
@@ -150,7 +150,7 @@ def load_session_from_path(file_path):
 
 
 def load_session_from_preset(filename):
-    session_file = os.path.join(defermi.gui.__path__[0],'presets',filename)
+    session_file = os.path.join(defermi_gui.__path__[0],'presets',filename)
     load_session_from_path(session_file)
     return
 

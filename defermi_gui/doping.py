@@ -4,8 +4,8 @@ import streamlit as st
 import matplotlib.pyplot as plt
 
 from defermi.plotter import plot_variable_species_vs_concentrations, plot_variable_species_vs_fermi_level
-from defermi.gui.info import cache_info, concentrations_mode_info, dopant_info
-from defermi.gui.utils import init_state_variable, download_plot, _get_axis_limits_with_widgets, _filter_concentrations
+from defermi_gui.info import cache_info, concentrations_mode_info, dopant_info
+from defermi_gui.utils import init_state_variable, download_plot, _get_axis_limits_with_widgets, _filter_concentrations
 
 
 def settings():

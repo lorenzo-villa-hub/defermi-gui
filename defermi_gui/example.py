@@ -11,12 +11,11 @@ import pandas as pd
 
 import defermi
 from defermi import DefectsAnalysis
-from defermi.gui.inputs import main_inputs, filter_entries, band_gap_vbm_inputs, reset_session
-from defermi.gui.chempots import chempots
-from defermi.gui.dos import dos
-from defermi.gui.thermodynamics import thermodynamics
-# from defermi.gui.plotter import plotter
-from defermi.gui.utils import init_state_variable, save_session
+from defermi_gui.inputs import main_inputs, filter_entries, band_gap_vbm_inputs, reset_session
+from defermi_gui.chempots import chempots
+from defermi_gui.dos import dos
+from defermi_gui.thermodynamics import thermodynamics
+from defermi_gui.utils import init_state_variable, save_session
 
 
 def load_session_from_example(file_path):
@@ -92,7 +91,7 @@ with st.sidebar:
    # main_inputs()
     init_state_variable('session_loaded',value=False)
     if not st.session_state['session_loaded']:
-        session_file = os.path.join(defermi.gui.__path__[0],'app_example.defermi')
+        session_file = os.path.join(defermi_gui.__path__[0],'app_example.defermi')
         load_session_from_example(session_file)
         st.session_state['session_loaded'] = True
     filter_entries()

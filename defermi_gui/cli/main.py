@@ -1,9 +1,9 @@
 
 import os
-import defermi.gui
+import defermi_gui
 
 def run_gui():
-    path_gui_main = defermi.gui.__file__.replace('__init__.py', 'main.py')
+    path_gui_main = defermi_gui.__file__.replace('__init__.py', 'main.py')
     os.system(f"streamlit run {path_gui_main}")
 
 def main():

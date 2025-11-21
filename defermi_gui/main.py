@@ -8,14 +8,13 @@ import matplotlib
 import time
 
 from defermi import DefectsAnalysis
-from defermi.gui.defaults import set_defaults
-from defermi.gui.initialize import initialize_state_variables, initialize_defects_analysis, initialize_complete_dataframe
-from defermi.gui.inputs import upload_file, band_gap_vbm_inputs, load_file#, filter_entries
-from defermi.gui.chempots import chempots
-from defermi.gui.dos import dos
-from defermi.gui.thermodynamics import thermodynamics
-# from defermi.gui.plotter import plotter
-from defermi.gui.utils import init_state_variable, save_session
+from defermi_gui.defaults import set_defaults
+from defermi_gui.initialize import initialize_state_variables, initialize_defects_analysis, initialize_complete_dataframe
+from defermi_gui.inputs import upload_file, band_gap_vbm_inputs, load_file#, filter_entries
+from defermi_gui.chempots import chempots
+from defermi_gui.dos import dos
+from defermi_gui.thermodynamics import thermodynamics
+from defermi_gui.utils import init_state_variable, save_session
 
 
 
