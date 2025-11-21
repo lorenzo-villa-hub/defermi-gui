@@ -1,2 +1,8 @@
 # defermi-gui
-User-Interface for `defermi`, made with `streamlit`
+User interface for `defermi`, made with `streamlit`.
+
+It can be installed with 
+
+```python
+pip install defermi-gui
+```
