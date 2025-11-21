@@ -14,29 +14,25 @@ requires-python = ">=3.11"
 
 dependencies = [
     "defermi",
-    "streamlit>=1.51.0"
+    "streamlit>=1.51.0",
+    "seaborn"
 ]
 
 [project.optional-dependencies]
 test = ["pytest"]
 
 [tool.setuptools.packages.find]
-include = ["defermi/gui*"]
+include = ["defermi.gui*"]
 exclude = [
     "defermi.gui.tests"
 ]
 
-[tool.coverage.run]
-branch = true
-include = ["defermi/*"]
-parallel = true
-
-[tool.coverage.paths]
-source = ["defermi/"]
-
 [tool.setuptools.package-data]
-"defermi.gui" = ["presets/*"]
-
+"defermi.gui" = [
+    "presets/*",
+    ".streamlit/*"
+]
 
 [project.scripts]
 defermi-gui = "defermi.gui.cli.main:main"
+
