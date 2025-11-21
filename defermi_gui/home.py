@@ -1,10 +1,10 @@
 
 import streamlit as st
 
-from defermi.gui.main import pages_dict
-from defermi.gui.inputs import upload_file, load_file
-from defermi.gui.info import title
-from defermi.gui.utils import init_state_variable, insert_space, load_session_from_preset, reset_session, widget_with_updating_state
+from defermi_gui.main import pages_dict
+from defermi_gui.inputs import upload_file, load_file
+from defermi_gui.info import title
+from defermi_gui.utils import init_state_variable, insert_space, load_session_from_preset, reset_session, widget_with_updating_state
 
 
 

@@ -1,8 +1,8 @@
 import streamlit as st
 import matplotlib.pyplot as plt
 
-from defermi.gui.info import names_info
-from defermi.gui.utils import download_plot, _filter_names, _get_axis_limits_with_widgets
+from defermi_gui.info import names_info
+from defermi_gui.utils import download_plot, _filter_names, _get_axis_limits_with_widgets
 
 
 def main():

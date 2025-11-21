@@ -4,8 +4,8 @@ import json
 import streamlit as st
 from monty.json import MontyDecoder
 
-from defermi.gui.info import dos_info
-from defermi.gui.utils import init_state_variable
+from defermi_gui.info import dos_info
+from defermi_gui.utils import init_state_variable
 
 def dos():
     """

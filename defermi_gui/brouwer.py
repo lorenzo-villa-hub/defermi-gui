@@ -7,8 +7,8 @@ import matplotlib.pyplot as plt
 from pymatgen.core.composition import Composition
 
 from defermi.plotter import plot_pO2_vs_concentrations, plot_pO2_vs_fermi_level
-from defermi.gui.info import precursors_info, oxygen_ref_info, cache_info, concentrations_mode_info, brouwer_diagram_info
-from defermi.gui.utils import init_state_variable, download_plot, _get_axis_limits_with_widgets, _filter_concentrations
+from defermi_gui.info import precursors_info, oxygen_ref_info, cache_info, concentrations_mode_info, brouwer_diagram_info
+from defermi_gui.utils import init_state_variable, download_plot, _get_axis_limits_with_widgets, _filter_concentrations
 
 
 def oxygen_ref():

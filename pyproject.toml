@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "defermi-gui"
-version = "0.0.1"
+version = "0.0.2"
 description = "User interface for defermi"
 readme = "README.md"
 authors = [
@@ -22,17 +22,17 @@ dependencies = [
 test = ["pytest"]
 
 [tool.setuptools.packages.find]
-include = ["defermi.gui*"]
+include = ["defermi_gui*"]
 exclude = [
-    "defermi.gui.tests"
+    "defermi_gui.tests"
 ]
 
 [tool.setuptools.package-data]
-"defermi.gui" = [
+"defermi_gui" = [
     "presets/*",
     ".streamlit/*"
 ]
 
 [project.scripts]
-defermi-gui = "defermi.gui.cli.main:main"
+defermi-gui = "defermi_gui.cli.main:main"
 

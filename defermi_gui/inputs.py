@@ -11,8 +11,8 @@ import pandas as pd
 
 
 from defermi import DefectsAnalysis 
-from defermi.gui.info import file_loader_info, band_gap_info
-from defermi.gui.utils import load_session, init_state_variable, widget_with_updating_state, reset_session
+from defermi_gui.info import file_loader_info, band_gap_info
+from defermi_gui.utils import load_session, init_state_variable, widget_with_updating_state, reset_session
 
 
 def reset_and_update_data():

@@ -1,12 +1,12 @@
 import streamlit as st
 import matplotlib.pyplot as plt
 
-from defermi.gui.brouwer import get_pO2_vs_fermi_level_figure
-from defermi.gui.ctls import CTLsPlotter
-from defermi.gui.doping import get_doping_vs_fermi_level_figure
-from defermi.gui.formation_energies import FormationEnergiesPlotter
-from defermi.gui.info import title
-from defermi.gui.utils import svg_logo, init_state_variable, insert_space
+from defermi_gui.brouwer import get_pO2_vs_fermi_level_figure
+from defermi_gui.ctls import CTLsPlotter
+from defermi_gui.doping import get_doping_vs_fermi_level_figure
+from defermi_gui.formation_energies import FormationEnergiesPlotter
+from defermi_gui.info import title
+from defermi_gui.utils import svg_logo, init_state_variable, insert_space
 
 FIGSIZE = (7,7)
 WIDTH = "content"

@@ -4,8 +4,8 @@ import streamlit as st
 from pymatgen.core.composition import Composition
 
 from defermi.chempots.generator import generate_elemental_chempots, generate_chempots_from_condition
-from defermi.gui.info import chempots_info
-from defermi.gui.utils import init_state_variable, widget_with_updating_state, reset_home_figures
+from defermi_gui.info import chempots_info
+from defermi_gui.utils import init_state_variable, widget_with_updating_state, reset_home_figures
 
 def chempots():
     """
