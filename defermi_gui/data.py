@@ -14,7 +14,7 @@ def main():
     st.set_page_config(layout="wide")
 
     st.write('')
-    cols = st.columns([0.15,0.15,0.3,0.3,0.1])
+    cols = st.columns([0.12,0.13,0.35,0.3,0.1])
     with cols[2]:
         if 'new_column' in st.session_state:
             value=st.session_state['new_column']
@@ -22,11 +22,13 @@ def main():
             value=''
         new_column = st.text_input(label='➕ Add column',value=value,placeholder='Enter column name',label_visibility='visible')
     with cols[0]:
+        st.space()
         def reset_dataframes():
             st.session_state.pop('complete_dataframe',None)
             return 
         st.button('Reset',key='widget_reset_da',on_click=reset_dataframes)
     with cols[1]:
+        st.space()
         if st.session_state.da:
             csv_str = st.session_state.da.to_dataframe(include_data=False,include_structures=False).to_csv(index=False)
             filename = st.session_state['session_name'] + '_dataset.csv'
@@ -46,6 +48,8 @@ def main():
             st.session_state['new_column'] = ''
         else:
             data[new_column] = 0.0 if 'corr_' in new_column else None
+
+    st.space()
     edited_df = st.data_editor(
                     data, 
                     column_config={

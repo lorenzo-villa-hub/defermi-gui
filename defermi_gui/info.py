@@ -1,4 +1,9 @@
 
+presets_info = """
+Presets do NOT contain real data! All energies are made-up numbers.
+Go to the **Data** section and experiment with numbers. See how changing parameters affects the results.
+"""
+
 dataframe_info = """
 - `name` : Name of the defect, naming conventions described below.
 - `charge` : Defect charge.
