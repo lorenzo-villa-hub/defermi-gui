@@ -4,7 +4,7 @@ import pandas as pd
 import time
 
 from defermi import DefectsAnalysis
-from defermi_gui.info import dataset_info, names_info
+from defermi_gui.info import *
 from defermi_gui.utils import init_state_variable, store_edited_df
 
 
@@ -53,12 +53,12 @@ def main():
     edited_df = st.data_editor(
                     data, 
                     column_config={
-                        'Include':st.column_config.CheckboxColumn(default=True),
-                        'name':st.column_config.TextColumn(default='Vac_O',help=names_info),
-                        'charge':st.column_config.NumberColumn(default=None),
-                        'multiplicity':st.column_config.NumberColumn(default=None),
-                        'energy_diff':st.column_config.NumberColumn(default=None),
-                        'bulk_volume':st.column_config.NumberColumn(default=None),
+                        'Include':st.column_config.CheckboxColumn(default=True,help=df_include_info),
+                        'name':st.column_config.TextColumn(default='Vac_O',help=df_name_info),
+                        'charge':st.column_config.NumberColumn(default=None,help=df_charge_info),
+                        'multiplicity':st.column_config.NumberColumn(default=None,help=df_multiplicity_info),
+                        'energy_diff':st.column_config.NumberColumn(default=None,help=df_energy_diff_info),
+                        'bulk_volume':st.column_config.NumberColumn(default=None,help=df_bulk_volume_info),
                         },
                     hide_index=True,
                     num_rows='dynamic',

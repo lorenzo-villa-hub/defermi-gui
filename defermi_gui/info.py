@@ -11,6 +11,9 @@ dataframe_info = """
 - `energy_diff` : Energy of the defective cell minus the energy of the pristine cell in eV.
 - `bulk_volume` : Pristine cell volume in $\\mathrm{\\AA^3}$
 
+Additionally, you can include correction terms by adding columns named
+`corr_{insert corr name}` (eg `corr_elastic`). Each value in columns with this name will be added to the formation energy. 
+
 Defect naming: (element = $A$)
 - Vacancy: `'Vac_A'` (symbol=$V_{A}$)
 - Interstitial: `'Int_A'` (symbol=$A_{i}$)
@@ -39,10 +42,41 @@ Rows are defect entries, columns are:\n
 {dataframe_info}\n
 
 Options:
-- **Edit**: enter editing mode.
 - **Reset**: restore the original dataset.
 - **Save csv**: Save customized dataset as `csv` file.
+- **Add column**: Add column to dataset.
 """
+
+df_include_info = """
+Check the box to include the entry in the analysis 
+"""
+
+df_name_info = """
+Name of the defect entry.
+Naming rules: (element = $A$)
+- Vacancy: `'Vac_A'` (symbol=$V_{A}$)
+- Interstitial: `'Int_A'` (symbol=$A_{i}$)
+- Substitution: `'Sub_B_on_A'` (symbol=$B_{A}$)
+- Polaron: `'Pol_A'` (symbol=${A}_{A}$)
+- DefectComplex: `'Vac_A;Int_A'` (symbol=$V_A - A_i$)
+"""
+
+df_charge_info = """
+Charge of the defect (`int` or `float`)
+"""
+
+df_multiplicity_info = """
+Multiplicity of the defect in the unit cell (`int`)
+"""
+
+df_energy_diff_info = """
+Energy of the defective cell minus the energy of the pristine cell in eV
+"""
+
+df_bulk_volume_info = """
+Volume of the unit cell in $\AA$
+"""
+
 
 chempots_info = """
 Chemical potential of the elements that are exchanged with a reservoirs when defects are formed.\n

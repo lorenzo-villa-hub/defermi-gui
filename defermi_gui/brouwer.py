@@ -236,7 +236,7 @@ def main():
 
 
         if "dos" in st.session_state and "precursors" in st.session_state:
-            if st.session_state['precursors'] or st.session_state.da.elements==['O']:
+            if st.session_state['precursors'] or st.session_state.brouwer_da.elements==['O']:
                 pressure_range = st.session_state['pressure_range']
                 brouwer_da = st.session_state['brouwer_da']
                 if brouwer_da:
