@@ -4,7 +4,7 @@ import pandas as pd
 import time
 
 from defermi import DefectsAnalysis
-from defermi_gui.info import dataset_info, names_info
+from defermi_gui.info import *
 from defermi_gui.utils import init_state_variable, store_edited_df
 
 
@@ -14,14 +14,21 @@ def main():
     st.set_page_config(layout="wide")
 
     st.write('')
-    cols = st.columns([0.1,0.7,0.1])
+    cols = st.columns([0.12,0.13,0.35,0.3,0.1])
+    with cols[2]:
+        if 'new_column' in st.session_state:
+            value=st.session_state['new_column']
+        else:
+            value=''
+        new_column = st.text_input(label='➕ Add column',value=value,placeholder='Enter column name',label_visibility='visible')
     with cols[0]:
+        st.space()
         def reset_dataframes():
             st.session_state.pop('complete_dataframe',None)
             return 
         st.button('Reset',key='widget_reset_da',on_click=reset_dataframes)
-
     with cols[1]:
+        st.space()
         if st.session_state.da:
             csv_str = st.session_state.da.to_dataframe(include_data=False,include_structures=False).to_csv(index=False)
             filename = st.session_state['session_name'] + '_dataset.csv'
@@ -30,21 +37,28 @@ def main():
                 data=csv_str,
                 file_name=filename,
                 mime="test/csv")   
-    with cols[2]:
+    with cols[-1]:
         with st.popover(label='ℹ️',help='Info',type='tertiary'):
             pass
             st.write(dataset_info)
 
     data = st.session_state['complete_dataframe']
+    if new_column:
+        if new_column in data.columns:
+            st.session_state['new_column'] = ''
+        else:
+            data[new_column] = 0.0 if 'corr_' in new_column else None
+
+    st.space()
     edited_df = st.data_editor(
                     data, 
                     column_config={
-                        'Include':st.column_config.CheckboxColumn(default=True),
-                        'name':st.column_config.TextColumn(default='Vac_O',help=names_info),
-                        'charge':st.column_config.NumberColumn(default=None),
-                        'multiplicity':st.column_config.NumberColumn(default=None),
-                        'energy_diff':st.column_config.NumberColumn(default=None),
-                        'bulk_volume':st.column_config.NumberColumn(default=None),
+                        'Include':st.column_config.CheckboxColumn(default=True,help=df_include_info),
+                        'name':st.column_config.TextColumn(default='Vac_O',help=df_name_info),
+                        'charge':st.column_config.NumberColumn(default=None,help=df_charge_info),
+                        'multiplicity':st.column_config.NumberColumn(default=None,help=df_multiplicity_info),
+                        'energy_diff':st.column_config.NumberColumn(default=None,help=df_energy_diff_info),
+                        'bulk_volume':st.column_config.NumberColumn(default=None,help=df_bulk_volume_info),
                         },
                     hide_index=True,
                     num_rows='dynamic',
@@ -55,8 +69,6 @@ def main():
     
 
     st.session_state['complete_dataframe'] = edited_df
-    st.session_state['dataframe'] = edited_df
-
     st.session_state.pop('formation_energies_figure',None)
 
 

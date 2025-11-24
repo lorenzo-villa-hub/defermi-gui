@@ -37,7 +37,8 @@ def set_defaults():
         st.session_state['color_sequence'] += matplotlib.color_sequences['Pastel1']
 
     if st.session_state.da:
-        df = st.session_state['complete_dataframe'].dropna()
+        df = st.session_state['complete_dataframe'].dropna(
+                subset=['name','charge','multiplicity','energy_diff','bulk_volume'])
         full_da = DefectsAnalysis.from_dataframe(
                                         df,
                                         band_gap=st.session_state.da.band_gap,

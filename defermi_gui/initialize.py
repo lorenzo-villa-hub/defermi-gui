@@ -13,17 +13,18 @@ def initialize_state_variables():
 
 
 def initialize_defects_analysis(df_complete):
-    st.session_state.da = None
-    df_complete = df_complete.dropna()
-    if df_complete.empty:
+    st.session_state.da = None # initialize da
+    df = df_complete.dropna(
+            subset=['name','charge','multiplicity','energy_diff','bulk_volume'])
+    if df.empty:
         st.warning('Dataset is empty')
     elif st.session_state['band_gap'] and 'vbm' in st.session_state:
-        df_to_import = df_complete[df_complete["Include"] == True] # keep only selected rows
+        df_to_import = df[df["Include"] == True] # keep only selected rows
         st.session_state.da = DefectsAnalysis.from_dataframe(
                                                     df_to_import,
                                                     band_gap=st.session_state['band_gap'],
                                                     vbm=st.session_state['vbm'],
-                                                    include_data=False) 
+                                                    include_data=False)
     return
 
 

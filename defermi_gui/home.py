@@ -3,7 +3,7 @@ import streamlit as st
 
 from defermi_gui.main import pages_dict
 from defermi_gui.inputs import upload_file, load_file
-from defermi_gui.info import title
+from defermi_gui.info import title, presets_info
 from defermi_gui.utils import init_state_variable, insert_space, load_session_from_preset, reset_session, widget_with_updating_state
 
 
@@ -51,12 +51,22 @@ def main():
         unsafe_allow_html=True
     )
 
+
+    presets_dict = {
+            'Vacancies':'vacancies.defermi',
+            'Vacancies + Substitutions':'vacancies_substitutions.defermi',
+            'Vacancies + Interstitial':'vacancies_interstitials.defermi',
+            'Complex':'complex.defermi',
+            'Silicon':'silicon.defermi'
+    }
+
+
     insert_space(100)
-    cols = st.columns([0.7,0.3])
+    cols = st.columns([0.7,0.2,0.1])
     with cols[0]:
         st.markdown('## 📄 Presets')
         init_state_variable('presets',value=None)
-        options = ['Vacancies','Vacancies + Interstitial']
+        options = list(presets_dict.keys())
 
         def change_preset():
             widget_presets = st.session_state['widget_presets']
@@ -89,17 +99,15 @@ def main():
 
         preset = presets[0] if presets else None
         if preset and not st.session_state['session_loaded']:
-
-            if preset == 'Vacancies':
-                filename = 'vacancies.defermi'
-                load_session_from_preset(filename=filename)
-
-            if preset == 'Vacancies + Interstitial':
-                filename = 'vacancies_interstitials.defermi'
-                load_session_from_preset(filename=filename)
+            filename = presets_dict[preset]
+            load_session_from_preset(filename=filename)
 
             st.session_state['session_loaded'] = True
             st.switch_page(pages_dict['overview'])  
+
+    with cols[-1]:
+        with st.popover(label='ℹ️',help='Info',type='tertiary'):
+            st.write(presets_info)
         
             
         

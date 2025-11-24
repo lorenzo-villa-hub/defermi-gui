@@ -80,7 +80,10 @@ def precursors():
                 st.write('')
                 st.button("🗑️", on_click=remove_precursor_entry, args=[entry['id']], key=f"widget_del_{entry['id']}")
 
-        st.session_state['precursors'] = {
+        if st.session_state.da.elements == ['O']:
+            st.session_state['precursors'] = None
+        else:
+            st.session_state['precursors'] = {
                             entry["composition"]: entry["energy"] 
                             for entry in st.session_state.precursor_entries
                             if entry["composition"]}
@@ -102,12 +105,12 @@ def filter_entries_with_missing_elements():
                     for element in Composition(comp).elements:
                         elements_in_precursors.add(element.symbol)
 
-        filter_elements = set()
+        filter_elements = set('O')
         missing_elements = set()
         for el in da.elements:
             if el in elements_in_precursors:
                 filter_elements.add(el)
-            else:
+            elif el != 'O': # "O" already in oxygen_ref
                 missing_elements.add(el)
 
         cols = st.columns(5)
@@ -139,7 +142,6 @@ def filter_entries_with_missing_elements():
                             else:
                                 if df.specie in st.session_state['quenched_species']:
                                     st.session_state['quenched_species_brouwer'].append(df.specie)
-
                 else:
                     for species in st.session_state['quenched_species']:
                         if species in brouwer_da.names:
@@ -234,9 +236,9 @@ def main():
 
 
         if "dos" in st.session_state and "precursors" in st.session_state:
-            if st.session_state['precursors']:
+            if st.session_state['precursors'] or st.session_state.brouwer_da.elements==['O']:
                 pressure_range = st.session_state['pressure_range']
-                brouwer_da = st.session_state['brouwer_da'] 
+                brouwer_da = st.session_state['brouwer_da']
                 if brouwer_da:
                     cols = st.columns([0.7,0.3])
                     with cols[1]:
