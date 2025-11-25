@@ -30,6 +30,7 @@ def set_defaults():
     st.session_state['pressure_range'] = (1e-35,1e30)
     st.session_state['figsize'] = (8, 8)
     st.session_state['alpha'] = 0.0
+    st.session_state['max_temperature'] = 2000
 
     if "color_sequence" not in st.session_state:
         st.session_state['color_sequence'] = matplotlib.color_sequences['tab10']
