@@ -27,9 +27,6 @@ def settings():
                 if el not in possible_dopants:
                     possible_dopants.append(el)
         possible_dopants.append('custom')
-
-        # def update_dopant_type_index():
-        #     st.session_state['dopant_type'] = st.session_state['widget_select_dopant']
         
         if st.session_state['dopant_type'] in possible_dopants:
             st.session_state['dopant_type_index'] = possible_dopants.index(st.session_state['dopant_type'])
