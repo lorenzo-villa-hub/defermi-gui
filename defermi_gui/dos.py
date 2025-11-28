@@ -48,8 +48,7 @@ def dos():
                     uploaded_dos = st.file_uploader("Upload", type=["json"], label_visibility="collapsed")
                     if uploaded_dos is not None:
                         data_bytes = uploaded_dos.getvalue() # file content as bytes
-                        data_str = data_bytes.decode('utf-8') # decode bytes to string (JSON text)
-                        json_str = json.loads(data_str)                        
+                        json_str = data_bytes.decode('utf-8') # decode bytes to string (JSON text)                      
                         dos = MontyDecoder().decode(json_str)
                         st.session_state['dos'] = dos
             elif dos_type == '$m^*/m_e$':

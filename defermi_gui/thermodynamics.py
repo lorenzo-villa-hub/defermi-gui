@@ -11,7 +11,7 @@ def thermodynamics():
     if st.session_state.da:
         init_state_variable('temperature',value=1000)
         st.markdown("### Temperature (K)")
-        temperature = st.slider("Temperature (K)", min_value=0, max_value=1500, value=st.session_state['temperature'], 
+        temperature = st.slider("Temperature (K)", min_value=0, max_value=st.session_state['max_temperature'], value=st.session_state['temperature'], 
                                 step=50, key="widget_temperature",label_visibility='collapsed')
         if temperature == 0:
             temperature = 0.1 # prevent division by zero
@@ -42,7 +42,7 @@ def quenching():
                 st.write(quenching_info)
         with cols[0]:
             st.session_state['quench_temperature'] = 300
-            quench_temperature = st.slider("Quench Temperature (K)", min_value=0, max_value=1500, 
+            quench_temperature = st.slider("Quench Temperature (K)", min_value=0, max_value=st.session_state['max_temperature'], 
                                         value=st.session_state['quench_temperature'], step=50, key="widget_quench_temperature")
             st.session_state['quench_temperature'] = quench_temperature
         if st.session_state['quench_temperature'] == 0:
