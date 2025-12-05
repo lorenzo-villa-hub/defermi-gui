@@ -9,10 +9,10 @@ from defermi_gui.utils import init_state_variable
 
 def thermodynamics():
     if st.session_state.da:
-        init_state_variable('temperature',value=1000)
+        init_state_variable('temperature',value=1000.0)
         st.markdown("### Temperature (K)")
-        temperature = st.slider("Temperature (K)", min_value=0, max_value=st.session_state['max_temperature'], value=st.session_state['temperature'], 
-                                step=50, key="widget_temperature",label_visibility='collapsed')
+        temperature = st.slider("Temperature (K)", min_value=0.0, max_value=st.session_state['max_temperature'], value=st.session_state['temperature'], 
+                                step=50.0, key="widget_temperature",label_visibility='collapsed')
         if temperature == 0:
             temperature = 0.1 # prevent division by zero
         st.session_state['temperature'] = temperature
@@ -41,11 +41,11 @@ def quenching():
             with st.popover(label='ℹ️',help='Info',type='tertiary'):
                 st.write(quenching_info)
         with cols[0]:
-            st.session_state['quench_temperature'] = 300
-            quench_temperature = st.slider("Quench Temperature (K)", min_value=0, max_value=st.session_state['max_temperature'], 
-                                        value=st.session_state['quench_temperature'], step=50, key="widget_quench_temperature")
+            st.session_state['quench_temperature'] = 300.0
+            quench_temperature = st.slider("Quench Temperature (K)", min_value=0.0, max_value=st.session_state['max_temperature'], 
+                                        value=st.session_state['quench_temperature'], step=50.0, key="widget_quench_temperature")
             st.session_state['quench_temperature'] = quench_temperature
-        if st.session_state['quench_temperature'] == 0:
+        if st.session_state['quench_temperature'] == 0.0:
             st.session_state['quench_temperature'] = 0.1 
 
         with cols[1]:
