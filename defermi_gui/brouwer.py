@@ -286,8 +286,8 @@ def main():
                         st.session_state['brouwer_diagram_figure'] = fig
                         st.pyplot(fig, clear_figure=False, width="stretch")
 
-                        fig = get_pO2_vs_fermi_level_figure(xlim)
-                        st.session_state['fermi_level_brouwer_figure'] = fig
+                        fig_fermi = get_pO2_vs_fermi_level_figure(xlim)
+                        st.session_state['fermi_level_brouwer_figure'] = fig_fermi
 
                     with cols[1]:
                         with st.popover(label='ℹ️',help='Info',type='tertiary'):

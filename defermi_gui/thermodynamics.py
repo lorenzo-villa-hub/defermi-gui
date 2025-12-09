@@ -14,7 +14,7 @@ def thermodynamics():
         temperature = st.slider("Temperature (K)", min_value=0.0, max_value=st.session_state['max_temperature'], value=st.session_state['temperature'], 
                                 step=50, key="widget_temperature",label_visibility='collapsed')
         if temperature == 0:
-            temperature = 0.1 # prevent division by zero
+            temperature = 1 # prevent division by zero
         st.session_state['temperature'] = temperature
 
         quenching()
@@ -46,7 +46,7 @@ def quenching():
                                         value=st.session_state['quench_temperature'], step=50.0, key="widget_quench_temperature")
             st.session_state['quench_temperature'] = quench_temperature
         if st.session_state['quench_temperature'] == 0:
-            st.session_state['quench_temperature'] = 0.1 
+            st.session_state['quench_temperature'] = 1 
 
         with cols[1]:
             index = 0 if st.session_state['quench_mode'] == 'species' else 1
