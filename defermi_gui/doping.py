@@ -251,8 +251,8 @@ def main():
                 st.session_state['doping_diagram_figure'] = fig
                 st.pyplot(fig, clear_figure=False, width="stretch")
 
-                fig = get_doping_vs_fermi_level_figure(xlim,ylim=None)
-                st.session_state['fermi_level_doping_figure'] = fig 
+                fig_fermi = get_doping_vs_fermi_level_figure(xlim,ylim=None)
+                st.session_state['fermi_level_doping_figure'] = fig_fermi 
 
             with cols[1]:
                 with st.popover(label='ℹ️',help='Info',type='tertiary'):
