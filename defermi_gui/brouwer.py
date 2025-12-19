@@ -6,9 +6,10 @@ import matplotlib.pyplot as plt
 
 from pymatgen.core.composition import Composition
 
+from defermi.defects import get_defect_from_string
 from defermi.plotter import plot_pO2_vs_concentrations, plot_pO2_vs_fermi_level
-from defermi_gui.info import precursors_info, oxygen_ref_info, cache_info, concentrations_mode_info, brouwer_diagram_info
-from defermi_gui.utils import init_state_variable, download_plot, _get_axis_limits_with_widgets, _filter_concentrations
+from defermi_gui.info import *
+from defermi_gui.utils import init_state_variable, download_plot, _get_axis_limits_with_widgets, _filter_concentrations, entries_section
 
 
 def oxygen_ref():
@@ -87,6 +88,26 @@ def precursors():
                             entry["composition"]: entry["energy"] 
                             for entry in st.session_state.precursor_entries
                             if entry["composition"]}
+            
+
+        cols = st.columns([0.9,0.1])
+        with cols[0]:
+            st.markdown("##### Fixed concentrations")
+        with cols[1]:
+            with st.popover(label='ℹ️',help='Info',type='tertiary'):
+                st.write(fixed_concentrations_info)
+
+        conc_label = 'log₁₀(concentration (cm⁻³))'
+        labels_types_dict = {'Label':str,conc_label:int}
+        entries = entries_section(
+                                widget_key='fixed_concentrations',
+                                labels_types_dict=labels_types_dict,
+                                columns = [0.1,0.25,0.25,0.4])
+        
+        fixed_conc = {entry["Label"]:float(10**entry[conc_label]) for entry in entries}
+        #fixed_conc = {k:float(10**v) for k,v in fixed_conc_log.items()}
+
+        st.session_state['fixed_concentrations'] = fixed_conc
 
 
 
@@ -105,13 +126,23 @@ def filter_entries_with_missing_elements():
                     for element in Composition(comp).elements:
                         elements_in_precursors.add(element.symbol)
 
+
         filter_elements = set('O')
         missing_elements = set()
+        for label in st.session_state['fixed_concentrations']: # fixed elements dont need precursors
+            try:
+                defect = get_defect_from_string(label)
+                el = defect.specie
+            except:
+                el = label
+            filter_elements.add(el)
+
         for el in da.elements:
             if el in elements_in_precursors:
                 filter_elements.add(el)
-            elif el != 'O': # "O" already in oxygen_ref
+            elif el not in filter_elements and el != 'O': # "O" already in oxygen_ref
                 missing_elements.add(el)
+
 
         cols = st.columns(5)
         for idx,el in enumerate(missing_elements):
@@ -127,7 +158,7 @@ def filter_entries_with_missing_elements():
                 st.warning('No entries for Brouwer diagram calculation')
                 brouwer_da = None
         else:
-            brouwer_da = None       
+            brouwer_da = None
         
         st.session_state['brouwer_da'] = brouwer_da
         st.session_state['quenched_species_brouwer'] = []
@@ -173,6 +204,7 @@ def compute_brouwer_diagram(_brouwer_da):
                             quench_temperature=st.session_state['quench_temperature'],
                             quenched_species=st.session_state['quenched_species_brouwer'],
                             quench_elements = st.session_state['quench_elements'],
+                            fixed_concentrations = st.session_state['fixed_concentrations'],
                             precursors=st.session_state['precursors'],
                             oxygen_ref=st.session_state['oxygen_ref'],
                             pressure_range=st.session_state['pressure_range'],
