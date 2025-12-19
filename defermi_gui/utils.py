@@ -4,6 +4,7 @@ import os
 import streamlit as st
 import json
 import pandas as pd
+import uuid
 
 from monty.json import jsanitize, MontyEncoder, MontyDecoder
 
@@ -80,6 +81,83 @@ def store_edited_df(key):
     return
 
 
+def entries_section(widget_key,labels_types_dict,columns):
+    """
+    Creates section with entries that can be added and deleted. 
+    The `streamlit` input widgets are defined based on variable types:
+    
+    - str: `st.text_input`
+    - float or int: `st.number_input`
+    - bool: `st.checkbox`
+
+    Parameters
+    ----------
+    widget_key : str
+        Common key for all entry widgets
+    labels_types_dict : dict
+        Dictionary with widget labels (str) as keys and associated variable type as values.
+        Example: {"Label":str,"Energy":float}
+    columns : tuple or list
+        Argument to pass to `st.columns`.
+
+    Returns
+    -------
+    entries : list
+        List of dictionaries with widgets outputs. Example: [{label:value}].
+    """
+    key = widget_key
+    init_state_variable(f'{key}_entries',value=[]) 
+    
+    cols = st.columns(columns)
+    with cols[0]:
+        add_entry = st.button("➕",key=f"widget_add_{key}")
+        if add_entry:
+            entry_id = str(uuid.uuid4()) # unique entry ID
+            entry = {"id": entry_id}
+            for label,typ in labels_types_dict.items():
+                entry[label] = typ()
+            st.session_state[f'{key}_entries'].append(entry)
+
+
+    def remove_entry(entry_id):
+        for idx,entry in enumerate(st.session_state[f'{key}_entries']):
+            if entry['id'] == entry_id:
+                del st.session_state[f'{key}_entries'][idx]
+
+
+    for entry in st.session_state[f'{key}_entries']:
+        idx = 0
+        for label,typ in labels_types_dict.items():
+            idx += 1 # first column is for add button
+            if typ == str:
+                function = st.text_input
+            elif typ in [int,float]:
+                function = st.number_input
+            elif typ == bool:
+                function = st.checkbox
+            else:
+                raise ValueError(f'Function for variable type "{typ}" for label "{label}" is not specified')
+            
+            with cols[idx]:
+                value = widget_with_updating_state(
+                                                function=function,
+                                                key=f'{label}_{entry["id"]}',
+                                                label=label,
+                                                value=entry[label])
+                entry[label] = value
+
+        with cols[-1]:
+            st.write('')
+            st.button("🗑️", on_click=remove_entry, args=[entry['id']], key=f"widget_del_{key}_{entry['id']}")
+
+    entries = []
+    for entry in st.session_state[f'{key}_entries']:
+        entries.append({label:entry[label] for label in labels_types_dict})
+            
+    return entries
+
+
+
 def get_session_data():
     data = {k:v for k,v in st.session_state.items() if 'widget' not in k and 'figure' not in k}
     keys_to_delete = [
@@ -88,7 +166,6 @@ def get_session_data():
         'presets',
         'precursors',
         'external_defects',
-        'input_dataframe'
     ]
     for k in keys_to_delete:
         data.pop(k,None)
