@@ -6,4 +6,5 @@ ase
 pymatgen>=2023.3.23
 pymatgen-analysis-defects>=2023.3.25
 mp-api
-defermi-gui
+defermi==1.3.3
+defermi-gui==0.0.6
