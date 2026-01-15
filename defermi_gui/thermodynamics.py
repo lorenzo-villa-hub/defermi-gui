@@ -4,7 +4,7 @@ import uuid
 import streamlit as st
 
 from defermi_gui.info import quenching_info, external_defects_info
-from defermi_gui.utils import init_state_variable
+from defermi_gui.utils import init_state_variable, entries_section
 
 
 def thermodynamics():
@@ -100,41 +100,19 @@ def external_defects():
         with st.popover(label='ℹ️',help='Info',type='tertiary'):
             st.write(external_defects_info)
 
-    init_state_variable('external_defects_entries',value=[])
-
-    cols = st.columns([0.11, 0.26, 0.26, 0.26, 0.11])
-    with cols[0]:
-        if st.button("➕",key="widget_add_external_defect"):
-            # Generate a unique ID for this entry
-            entry_id = str(uuid.uuid4())
-            st.session_state['external_defects_entries'].append({
-                "id": entry_id,
-                "name": "",
-                "charge": 0.0,
-                "conc":1.0})
-
-    def remove_external_defects_entries(entry_id):
-        for idx,entry in enumerate(st.session_state['external_defects_entries']):
-            if entry['id'] == entry_id:
-                del st.session_state['external_defects_entries'][idx]
-
-    for defect in st.session_state['external_defects_entries']:
-        with cols[1]:
-            name = st.text_input("Name",value=defect['name'], key=f"widget_name_{defect['id']}")
-            defect["name"] = name
-        with cols[2]:
-            charge = st.number_input("Charge", value=defect['charge'], step=1.0,key=f"widget_charge_{defect['id']}")
-            defect["charge"] = charge
-        with cols[3]:
-            value = int(np.log10(float(defect['conc']))) if defect['conc'] else 0
-            conc = st.number_input(r"log₁₀(c (cm⁻³))", value=value, step=1, key=f"widget_conc_{defect['id']}")
-            defect["conc"] = 10**conc 
-        with cols[4]:
-            st.button("🗑️", on_click=remove_external_defects_entries, args=[defect['id']], key=f"widget_del_{defect['id']}")
-
+    conc_label = r"log₁₀(c (cm⁻³))"
+    labels_types_dict = {
+                    'Name':str,
+                    'Charge':int,
+                    conc_label:int}
+    entries = entries_section(
+                            widget_key='external_defects',
+                            labels_types_dict=labels_types_dict,
+                            columns=[0.11, 0.26, 0.26, 0.26, 0.11])
+    
     st.session_state['external_defects'] = [{
-                        'name':e['name'],
-                        'charge':e['charge'],
-                        'conc':e['conc']
-                        } for e in st.session_state.external_defects_entries if e["name"]]
+                    'name':e['Name'],
+                    'charge':e['Charge'],
+                    'conc':float(10 ** e[conc_label])
+                    } for e in entries if e['Name']]
         

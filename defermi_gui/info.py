@@ -158,6 +158,20 @@ All elements that are not present in the entries compositions are excluded from 
 The values in the **Chemical Potentials** section are ignored for the calculation of the Brouwer diagram.
 """
 
+fixed_concentrations_info = """
+Define defect concentrations to be kept fixed during equilibration. **Label** can be set as:
+- **name**: Defect name present in defect entries (see **Data** section). The total concentration 
+            of this defect species is kept fixed, but their charges are equilibrated. 
+            The relative concentrations in different charge states are independent of the 
+            chemical potential of the target species.  
+            Example: "Sub_Fe_on_Ti".
+- **element**: Element symbol. Fix the total concentration of a target element across different species. 
+               The relative concentrations of defect species containing the element and in different charge states
+               are equilibrated. If the element is present in more than one defect species with different elements,
+               the relative concentrations will depend on chemical potentials.  
+               Example: "Fe".
+"""
+
 dopant_info = """
 Settings for the calculation of the doping diagram.
 Charge neutrality is solved varying the concentartion of a target defect. 
@@ -168,8 +182,9 @@ Options:
 - **Donor** : A generic donor is used as variable defect species. You can set the charge and concentration range.
 - **Acceptor** : A generic acceptor is used as variable defect species. You can set the charge and concentration range.
 - **<element>** : If extrinsic defects are present in the defect entries, 
-                you can set each extrinsic element as variable defect species. Its total concentration is assigned, but the concentrations  
-                of individual defects containing the element depend on the relative formation energies. 
+                you can set each extrinsic element as variable defect species. Its total concentration is assigned, 
+                but the concentrations of individual defects containing the element depend on the relative 
+                formation energies. 
 - **custom** : Customizable dopant. You can set name, charge and concentration range. 
                 There is no requirement for the defect name, if a name fits one of the naming conventions,
                 the corrisponding symbol will be printed.
