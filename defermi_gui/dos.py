@@ -59,14 +59,14 @@ def dos():
                     else:
                         st.session_state['dos'] = {}
                         value = 1.0
-                    m_eff_e = st.number_input(f"e", value=value, max_value=1.1,step=0.1, key='widget_dos_m_eff_e')
+                    m_eff_e = st.number_input(f"e", value=value,step=0.1, key='widget_dos_m_eff_e')
                     st.session_state['dos']['m_eff_e'] = m_eff_e
                 with cols[1]:
                     if st.session_state['dos'] and type(st.session_state['dos']) == dict and 'm_eff_h' in st.session_state['dos']:
                         value = st.session_state['dos']['m_eff_h']
                     else:
                         value = 1.0
-                    m_eff_h = st.number_input(f"h", value=value, max_value=1.1,step=0.1, key='widget_dos_m_eff_h')
+                    m_eff_h = st.number_input(f"h", value=value, step=0.1, key='widget_dos_m_eff_h')
                     st.session_state['dos']['m_eff_h'] = m_eff_h
 
         st.divider()
