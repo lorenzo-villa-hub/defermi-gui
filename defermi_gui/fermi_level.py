@@ -11,6 +11,7 @@ def main():
 
     st.set_page_config(layout="wide")
     st.title('Fermi Level')
+    st.warning('This page uses data computed from the Brouwer and Doping pages. Use the "Compute button" in the dedicated pages to update the plots.')
     if st.session_state.da:
         da = st.session_state.da
         is_oxygen = 'O' in da.elements

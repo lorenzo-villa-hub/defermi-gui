@@ -14,14 +14,26 @@ from defermi_gui.utils import init_state_variable, download_plot, _get_axis_limi
 
 def oxygen_ref():
     init_state_variable('oxygen_ref',value=-4.95)
-    subcols = st.columns([0.2,0.8])
+    init_state_variable('pressure_range',value=None)
+    subcols = st.columns([0.2,0.1,0.4,0.3])
     with subcols[0]:
         oxygen_ref = st.number_input('**μO (0K, p0) [eV]**', value=st.session_state['oxygen_ref'], step=0.5, key='widget_oxygen_ref',label_visibility='visible')
         st.session_state['oxygen_ref'] = oxygen_ref
     with subcols[1]:
         with st.popover(label='ℹ️',help='Info',type='tertiary'):
             st.write(oxygen_ref_info)
-
+    with subcols[2]:
+        def update_pressure_range():
+            min_conc, max_conc = st.session_state['widget_pressure_range']
+            st.session_state['pressure_range'] = ( float(10**min_conc), float(10**max_conc) )
+            return
+        if st.session_state['pressure_range']:
+            value = int(np.log10(float(st.session_state['pressure_range'] [0]))), int(np.log10(float(st.session_state['pressure_range'] [1])))
+        else:
+            value = (-35,30) 
+            st.session_state['pressure_range'] = (1e-35,1e30)       
+        st.slider(r"pO₂ range: log₁₀(p (atm))",min_value=-35,max_value=30,value=value,step=1, 
+                                            key="widget_pressure_range",on_change=update_pressure_range)
 
 def precursors():
     if st.session_state.da:
@@ -291,41 +303,53 @@ def main():
                         ylim = (float(10**ylim[0]) , float(10**ylim[1]))
                         ylim = ylim if set_ylim else None   
 
-                        brouwer_thermodata = compute_brouwer_diagram(_brouwer_da=brouwer_da) # leading underscore tells streamlit not to hash the argument
-                        dc = brouwer_thermodata.defect_concentrations[0]
-                        output, names, charges, colors = _filter_concentrations(dc,key='brouwer')
+                        try:
+                            brouwer_thermodata = compute_brouwer_diagram(_brouwer_da=brouwer_da) # leading underscore tells streamlit not to hash the argument
+                        except ValueError as e:
+                            if "Self-consistent Fermi level solver failed" in str(e):
+                                brouwer_thermodata = None
+                        if brouwer_thermodata:
+                            dc = brouwer_thermodata.defect_concentrations[0]
+                            output, names, charges, colors = _filter_concentrations(dc,key='brouwer')
 
-                    with cols[0]:  
-                        fig = plot_pO2_vs_concentrations(
-                                                    thermodata=brouwer_thermodata,
-                                                    output=output,
-                                                    figsize=st.session_state['figsize'],
-                                                    fontsize=st.session_state['fontsize'],
-                                                    xlim=xlim,
-                                                    ylim=ylim,
-                                                    colors=colors,
-                                                    names=names,
-                                                    charges=charges)                                           
+                    if brouwer_thermodata:
+                        with cols[0]:  
+                            fig = plot_pO2_vs_concentrations(
+                                                        thermodata=brouwer_thermodata,
+                                                        output=output,
+                                                        figsize=st.session_state['figsize'],
+                                                        fontsize=st.session_state['fontsize'],
+                                                        xlim=xlim,
+                                                        ylim=ylim,
+                                                        colors=colors,
+                                                        names=names,
+                                                        charges=charges)                                           
 
-                        fig.grid()
-                        fig.xlabel(plt.gca().get_xlabel(), fontsize=st.session_state['label_size'])
-                        fig.ylabel(plt.gca().get_ylabel(), fontsize=st.session_state['label_size'])
-                        ax = fig.gca()
-                        fig = ax.get_figure()
-                        fig.patch.set_alpha(st.session_state['alpha'])
-                        ax.patch.set_alpha(st.session_state['alpha'])
-                        st.session_state['brouwer_thermodata'] = brouwer_thermodata
-                        st.session_state['brouwer_diagram_figure'] = fig
-                        st.pyplot(fig, clear_figure=False, width="stretch")
+                            fig.grid()
+                            fig.xlabel(plt.gca().get_xlabel(), fontsize=st.session_state['label_size'])
+                            fig.ylabel(plt.gca().get_ylabel(), fontsize=st.session_state['label_size'])
+                            ax = fig.gca()
+                            fig = ax.get_figure()
+                            fig.patch.set_alpha(st.session_state['alpha'])
+                            ax.patch.set_alpha(st.session_state['alpha'])
+                            st.session_state['brouwer_thermodata'] = brouwer_thermodata
+                            st.session_state['brouwer_diagram_figure'] = fig
+                            st.pyplot(fig, clear_figure=False, width="stretch")
 
-                        fig_fermi = get_pO2_vs_fermi_level_figure(xlim)
-                        st.session_state['fermi_level_brouwer_figure'] = fig_fermi
+                            fig_fermi = get_pO2_vs_fermi_level_figure(xlim)
+                            st.session_state['fermi_level_brouwer_figure'] = fig_fermi
 
-                    with cols[1]:
-                        with st.popover(label='ℹ️',help='Info',type='tertiary'):
-                            st.write(concentrations_mode_info)
-                        st.write('')
-                        download_plot(fig=fig,filename='brouwer_diagram.pdf')
+                        with cols[1]:
+                            with st.popover(label='ℹ️',help='Info',type='tertiary'):
+                                st.write(concentrations_mode_info)
+                            st.write('')
+                            download_plot(fig=fig,filename='brouwer_diagram.pdf')
+                    else:
+                        st.session_state.pop('fermi_level_brouwer_figure',None)
+                        st.warning("Self-consistent Fermi level solver failed: "
+                                    "one or more defect concentrations likely diverge.")
+                        st.warning("Try to adjust the oxygen partial pressure range.")
+                        
 
     elif st.session_state.da and 'O' not in st.session_state.da.elements:
         st.warning('Brouwer analysis concerns only systems containing Oxygen')

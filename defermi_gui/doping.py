@@ -224,41 +224,53 @@ def main():
                 ylim = (float(10**ylim[0]) , float(10**ylim[1]))
                 ylim = ylim if set_ylim else None   
 
-                doping_thermodata = compute_doping_diagram()
-                dc = doping_thermodata.defect_concentrations[0]
-                output, names, charges, colors = _filter_concentrations(dc,key='doping')
+                try:
+                    doping_thermodata = compute_doping_diagram()
+                except ValueError as e:
+                    if "Self-consistent Fermi level solver failed" in str(e):
+                        doping_thermodata = None
+                if doping_thermodata:
+                    dc = doping_thermodata.defect_concentrations[0]
+                    output, names, charges, colors = _filter_concentrations(dc,key='doping')
 
-            with cols[0]:
-                fig = plot_variable_species_vs_concentrations(
-                                                doping_thermodata,
-                                                output=output,
-                                                figsize=st.session_state['figsize'],
-                                                fontsize=st.session_state['fontsize'],
-                                                colors=colors,
-                                                xlim=xlim,
-                                                ylim=ylim,
-                                                names=names,
-                                                charges=charges
-                                                )
-                fig.grid()
-                fig.xlabel(plt.gca().get_xlabel(), fontsize=st.session_state['label_size'])
-                fig.ylabel(plt.gca().get_ylabel(), fontsize=st.session_state['label_size'])
-                ax = fig.gca()
-                fig = ax.get_figure()
-                fig.patch.set_alpha(st.session_state['alpha'])
-                ax.patch.set_alpha(st.session_state['alpha'])
-                st.session_state['doping_thermodata'] = doping_thermodata
-                st.session_state['doping_diagram_figure'] = fig
-                st.pyplot(fig, clear_figure=False, width="stretch")
+            if doping_thermodata:
+                with cols[0]:
+                    fig = plot_variable_species_vs_concentrations(
+                                                    doping_thermodata,
+                                                    output=output,
+                                                    figsize=st.session_state['figsize'],
+                                                    fontsize=st.session_state['fontsize'],
+                                                    colors=colors,
+                                                    xlim=xlim,
+                                                    ylim=ylim,
+                                                    names=names,
+                                                    charges=charges
+                                                    )
+                    fig.grid()
+                    fig.xlabel(plt.gca().get_xlabel(), fontsize=st.session_state['label_size'])
+                    fig.ylabel(plt.gca().get_ylabel(), fontsize=st.session_state['label_size'])
+                    ax = fig.gca()
+                    fig = ax.get_figure()
+                    fig.patch.set_alpha(st.session_state['alpha'])
+                    ax.patch.set_alpha(st.session_state['alpha'])
+                    st.session_state['doping_thermodata'] = doping_thermodata
+                    st.session_state['doping_diagram_figure'] = fig
+                    st.pyplot(fig, clear_figure=False, width="stretch")
 
-                fig_fermi = get_doping_vs_fermi_level_figure(xlim,ylim=None)
-                st.session_state['fermi_level_doping_figure'] = fig_fermi 
+                    fig_fermi = get_doping_vs_fermi_level_figure(xlim,ylim=None)
+                    st.session_state['fermi_level_doping_figure'] = fig_fermi 
 
-            with cols[1]:
-                with st.popover(label='ℹ️',help='Info',type='tertiary'):
-                    st.write(concentrations_mode_info)
-                st.write('')
-                download_plot(fig=fig,filename='doping_diagram.pdf')
+                with cols[1]:
+                    with st.popover(label='ℹ️',help='Info',type='tertiary'):
+                        st.write(concentrations_mode_info)
+                    st.write('')
+                    download_plot(fig=fig,filename='doping_diagram.pdf')
+            else:
+                st.session_state.pop('fermi_level_doping_figure',None)
+                st.warning("Self-consistent Fermi level solver failed: "
+                            "one or more defect concentrations likely diverge. ")
+                st.warning("Try to adjust the concentration range or the chemical potentials in the sidebar")
+                        
 
 
 if __name__ == '__main__':

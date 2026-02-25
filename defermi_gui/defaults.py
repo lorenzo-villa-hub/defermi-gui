@@ -27,7 +27,7 @@ def set_defaults():
     st.session_state['fontsize'] = 16
     st.session_state['label_size'] = 16
     st.session_state['npoints'] = 80
-    st.session_state['pressure_range'] = (1e-35,1e30)
+    #st.session_state['pressure_range'] = (1e-35,1e30)
     st.session_state['figsize'] = (8, 8)
     st.session_state['alpha'] = 0.0
     st.session_state['max_temperature'] = 2000
