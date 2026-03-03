@@ -2,6 +2,7 @@
 import streamlit as st
 import matplotlib.pyplot as plt
 
+from defermi_gui.formation_energies import FormationEnergiesPlotter
 from defermi_gui.info import names_info
 from defermi_gui.utils import download_plot, _filter_names, _get_axis_limits_with_widgets
 
@@ -11,12 +12,13 @@ class CTLsPlotter:
     def __init__(self,defects_analysis):
         self.da = defects_analysis
 
-    def get_figure(self,entries=None,xlim=None,ylim=None):
+    def get_figure(self,entries=None,colors=None,xlim=None,ylim=None):
         da = self.da
         fig = da.plot_ctl(
             entries=entries,
             figsize=st.session_state['figsize'],
             fontsize=st.session_state['fontsize'],
+            colors=colors,
             ylim=ylim)
         fig.grid()
         fig.xlabel(plt.gca().get_xlabel(), fontsize=st.session_state['label_size'])
@@ -45,16 +47,8 @@ class CTLsPlotter:
         ylim = ylim if set_ylim else None
         return xlim,ylim
 
-
-    def get_entries(self,filter_names=True):
-        da = self.da
-        defect_names = da.names
-        if filter_names:
-            names = _filter_names(defect_names=defect_names,key='ctl')
-        else:
-            names = defect_names
-        entries = da.select_entries(names=names)
-        return entries
+    def get_entries_and_colors(self,filter_names=True):
+        return FormationEnergiesPlotter(self.da).get_entries_and_colors(filter_names=filter_names)
 
 
 
@@ -70,10 +64,14 @@ def main():
         plotter = CTLsPlotter(defects_analysis=da)
         with cols[1]:
             xlim,ylim = plotter.get_axis_limits()
-            entries = plotter.get_entries(da)
+            entries, colors = plotter.get_entries_and_colors()
 
         with cols[0]:
-            fig = plotter.get_figure(entries,xlim,ylim)
+            fig = plotter.get_figure(
+                                    entries=entries,
+                                    colors=colors,
+                                    xlim=xlim,
+                                    ylim=ylim)
             st.pyplot(fig, clear_figure=False, width="stretch")
 
         with cols[1]:
