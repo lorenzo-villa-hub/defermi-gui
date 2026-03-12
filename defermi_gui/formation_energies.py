@@ -15,7 +15,7 @@ class FormationEnergiesPlotter:
         da = self.da
         if 'chempots' not in st.session_state:
             st.warning('Chemical potentials are not defined')
-        fig = da.plot_formation_energies(
+        ax = da.plot_formation_energies(
             entries=entries,
             chemical_potentials=st.session_state['chempots'],
             figsize=st.session_state['figsize'],
@@ -23,10 +23,9 @@ class FormationEnergiesPlotter:
             colors=colors,
             xlim=xlim,
             ylim=ylim)
-        fig.grid()
-        fig.xlabel(plt.gca().get_xlabel(), fontsize=st.session_state['label_size'])
-        fig.ylabel(plt.gca().get_ylabel(), fontsize=st.session_state['label_size'])
-        ax = fig.gca()
+        ax.grid()
+        ax.set_xlabel(ax.get_xlabel(), fontsize=st.session_state['label_size'])
+        ax.set_ylabel(ax.get_ylabel(), fontsize=st.session_state['label_size'])
         fig = ax.get_figure()
         fig.patch.set_alpha(st.session_state['alpha'])
         ax.patch.set_alpha(st.session_state['alpha'])

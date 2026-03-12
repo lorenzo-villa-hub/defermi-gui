@@ -232,7 +232,7 @@ def get_pO2_vs_fermi_level_figure(xlim,ylim=None):
         da = st.session_state.da
         thermodata = st.session_state.brouwer_thermodata
 
-        fig = plot_pO2_vs_fermi_level(
+        ax = plot_pO2_vs_fermi_level(
                 partial_pressures=thermodata.partial_pressures,
                 fermi_levels=thermodata.fermi_levels,
                 band_gap=da.band_gap,
@@ -241,11 +241,10 @@ def get_pO2_vs_fermi_level_figure(xlim,ylim=None):
                 xlim=xlim,
                 ylim=ylim
         )
-        fig.grid()
-        fig.title('Brouwer diagram')
-        fig.xlabel(plt.gca().get_xlabel(), fontsize=st.session_state['label_size'])
-        fig.ylabel(plt.gca().get_ylabel(), fontsize=st.session_state['label_size'])
-        ax = fig.gca()
+        ax.grid()
+        ax.set_title('Brouwer diagram')
+        ax.set_xlabel(ax.get_xlabel(), fontsize=st.session_state['label_size'])
+        ax.set_ylabel(plt.gca().get_ylabel(), fontsize=st.session_state['label_size'])
         fig = ax.get_figure()
         fig.patch.set_alpha(st.session_state['alpha'])
         ax.patch.set_alpha(st.session_state['alpha'])
@@ -314,7 +313,7 @@ def main():
 
                     if brouwer_thermodata:
                         with cols[0]:  
-                            fig = plot_pO2_vs_concentrations(
+                            ax = plot_pO2_vs_concentrations(
                                                         thermodata=brouwer_thermodata,
                                                         output=output,
                                                         figsize=st.session_state['figsize'],
@@ -325,10 +324,9 @@ def main():
                                                         names=names,
                                                         charges=charges)                                           
 
-                            fig.grid()
-                            fig.xlabel(plt.gca().get_xlabel(), fontsize=st.session_state['label_size'])
-                            fig.ylabel(plt.gca().get_ylabel(), fontsize=st.session_state['label_size'])
-                            ax = fig.gca()
+                            ax.grid()
+                            ax.set_xlabel(ax.get_xlabel(), fontsize=st.session_state['label_size'])
+                            ax.set_ylabel(ax.get_ylabel(), fontsize=st.session_state['label_size'])
                             fig = ax.get_figure()
                             fig.patch.set_alpha(st.session_state['alpha'])
                             ax.patch.set_alpha(st.session_state['alpha'])

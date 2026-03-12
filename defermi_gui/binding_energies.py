@@ -39,17 +39,16 @@ def main():
                     colors.append(color)
 
         with cols[0]:
-            fig = da.plot_binding_energies(
+            ax = da.plot_binding_energies(
                 names=names,
                 figsize=st.session_state['figsize'],
                 fontsize=st.session_state['fontsize'],
                 colors=colors,
                 xlim=xlim,
                 ylim=ylim)
-            fig.grid()
-            fig.xlabel(plt.gca().get_xlabel(), fontsize=st.session_state['label_size'])
-            fig.ylabel(plt.gca().get_ylabel(), fontsize=st.session_state['label_size'])
-            ax = fig.gca()
+            ax.grid()
+            ax.set_xlabel(ax.get_xlabel(), fontsize=st.session_state['label_size'])
+            ax.set_ylabel(ax.get_ylabel(), fontsize=st.session_state['label_size'])
             fig = ax.get_figure()
             fig.patch.set_alpha(st.session_state['alpha'])
             ax.patch.set_alpha(st.session_state['alpha'])

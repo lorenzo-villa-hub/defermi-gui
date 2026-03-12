@@ -14,16 +14,15 @@ class CTLsPlotter:
 
     def get_figure(self,entries=None,colors=None,xlim=None,ylim=None):
         da = self.da
-        fig = da.plot_ctl(
+        ax = da.plot_ctl(
             entries=entries,
             figsize=st.session_state['figsize'],
             fontsize=st.session_state['fontsize'],
             colors=colors,
             ylim=ylim)
-        fig.grid()
-        fig.xlabel(plt.gca().get_xlabel(), fontsize=st.session_state['label_size'])
-        fig.ylabel(plt.gca().get_ylabel(), fontsize=st.session_state['label_size'])
-        ax = fig.gca()
+        ax.grid()
+        ax.set_xlabel(ax.get_xlabel(), fontsize=st.session_state['label_size'])
+        ax.set_ylabel(ax.get_ylabel(), fontsize=st.session_state['label_size'])
         fig = ax.get_figure()
         fig.patch.set_alpha(st.session_state['alpha'])
         ax.patch.set_alpha(st.session_state['alpha'])

@@ -20,7 +20,7 @@ def main():
             if 'brouwer_thermodata' in st.session_state:
                 with cols[0]:
                     if 'fermi_level_brouwer_figure' in st.session_state:
-                        fig = st.session_state['fermi_level_brouwer_figure'] #_po2_vs_fermi_level_diagram(xlim,ylim)
+                        fig = st.session_state['fermi_level_brouwer_figure'] 
                         st.pyplot(fig, clear_figure=False, width='stretch')
                         subcols = st.columns([0.4,0.6])
                         with subcols[1]:
