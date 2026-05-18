@@ -19,7 +19,7 @@ with cols[0]:
     elif st.session_state.da:
         plotter = FormationEnergiesPlotter(st.session_state.da) 
         entries,colors = plotter.get_entries_and_colors(filter_names=False)
-        fig = plotter.get_figure(entries,colors)
+        fig = plotter.get_figure(entries=entries,colors=colors)
     if fig:
         fig.gca().set_title('')
         fig.set_size_inches(*FIGSIZE)
@@ -35,8 +35,8 @@ with cols[1]:
         fig = st.session_state['ctls_figure']
     elif st.session_state.da:
         plotter = CTLsPlotter(st.session_state.da) 
-        entries = plotter.get_entries(filter_names=False)
-        fig = plotter.get_figure(entries)
+        entries,colors = plotter.get_entries_and_colors(filter_names=False)
+        fig = plotter.get_figure(entries=entries,colors=colors)
     if fig:
         fig.gca().set_title('')
         fig.set_size_inches(*FIGSIZE)

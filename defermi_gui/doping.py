@@ -172,7 +172,7 @@ def get_doping_vs_fermi_level_figure(xlim,ylim=None):
         else:
             xlabel = st.session_state['dopant']
 
-        fig = plot_variable_species_vs_fermi_level(
+        ax = plot_variable_species_vs_fermi_level(
                 xlabel = xlabel, 
                 variable_concentrations=thermodata.variable_concentrations,
                 fermi_levels=thermodata.fermi_levels,
@@ -182,11 +182,10 @@ def get_doping_vs_fermi_level_figure(xlim,ylim=None):
                 xlim=xlim,
                 ylim=ylim
         )
-        fig.grid()
-        fig.title('Doping diagram')
-        fig.xlabel(plt.gca().get_xlabel(), fontsize=st.session_state['label_size'])
-        fig.ylabel(plt.gca().get_ylabel(), fontsize=st.session_state['label_size'])
-        ax = fig.gca()
+        ax.grid()
+        ax.set_title('Doping diagram')
+        ax.set_xlabel(ax.get_xlabel(), fontsize=st.session_state['label_size'])
+        ax.set_ylabel(ax.get_ylabel(), fontsize=st.session_state['label_size'])
         fig = ax.get_figure()
         fig.patch.set_alpha(st.session_state['alpha'])
         ax.patch.set_alpha(st.session_state['alpha'])
@@ -235,7 +234,7 @@ def main():
 
             if doping_thermodata:
                 with cols[0]:
-                    fig = plot_variable_species_vs_concentrations(
+                    ax = plot_variable_species_vs_concentrations(
                                                     doping_thermodata,
                                                     output=output,
                                                     figsize=st.session_state['figsize'],
@@ -246,10 +245,9 @@ def main():
                                                     names=names,
                                                     charges=charges
                                                     )
-                    fig.grid()
-                    fig.xlabel(plt.gca().get_xlabel(), fontsize=st.session_state['label_size'])
-                    fig.ylabel(plt.gca().get_ylabel(), fontsize=st.session_state['label_size'])
-                    ax = fig.gca()
+                    ax.grid()
+                    ax.set_xlabel(ax.get_xlabel(), fontsize=st.session_state['label_size'])
+                    ax.set_ylabel(ax.get_ylabel(), fontsize=st.session_state['label_size'])
                     fig = ax.get_figure()
                     fig.patch.set_alpha(st.session_state['alpha'])
                     ax.patch.set_alpha(st.session_state['alpha'])
