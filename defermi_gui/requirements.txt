@@ -1,10 +1,10 @@
 streamlit>=1.51.0
-matplotlib
-seaborn
-pandas
-ase
+matplotlib==3.10.8
+seaborn==0.13.2
+pandas==2.2.3
+ase==3.24.0
 pymatgen>=2023.3.23
 pymatgen-analysis-defects>=2023.3.25
-mp-api
+mp-api==0.45.8
 defermi==1.5.1
 defermi-gui==0.1.3
